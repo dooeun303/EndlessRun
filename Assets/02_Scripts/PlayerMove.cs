@@ -13,6 +13,9 @@ public class PlayerMove : MonoBehaviour
 
     private Vector3 dir = Vector3.zero;
 
+    private bool ground = false;
+    public LayerMask layer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +30,14 @@ public class PlayerMove : MonoBehaviour
         dir.z = Input.GetAxis("Vertical");
         dir.Normalize(); // 대각선 으로 갈때도 속도 동일하게 함
 
+        CheckGround();
 
+        // 점프기능
+        if (Input.GetButtonDown("Jump") && ground)
+        {
+            Vector3 jumpPower = Vector3.up * jumpHeight;
+            rb.AddForce(jumpPower, ForceMode.VelocityChange);
+        }
 
     }
 
@@ -50,5 +60,20 @@ public class PlayerMove : MonoBehaviour
         }
 
         rb.MovePosition(this.gameObject.transform.position + dir * speed * Time.deltaTime);
+    }
+
+    // 점프할때 사용할 땅에 닿았는지 확인하는 함수
+    void CheckGround()
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position + (Vector3.up * 0.2f), Vector3.down, out hit, 0.4f, layer))
+        // 캐릭터 발끝보다 0.2만큼 위에서 아래로 0.4만큼길이의 레이저를 쏨. 이 길이 안에서 우리가 설정한 레이어ㅏ 검출되면 hit에 담아라
+        {
+            ground = true;
+        } else
+        {
+            ground = false;
+        }
     }
 }
