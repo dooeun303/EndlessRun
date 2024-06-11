@@ -16,6 +16,13 @@ public class PlayerMove : MonoBehaviour
     private bool ground = false;
     public LayerMask layer;
 
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +30,8 @@ public class PlayerMove : MonoBehaviour
         anim = this.GetComponent<Animator>();
     }
 
-    // Update is called once per frame
+
+
     void Update()
     {
         dir.x = Input.GetAxis("Horizontal");
@@ -37,9 +45,12 @@ public class PlayerMove : MonoBehaviour
         {
             Vector3 jumpPower = Vector3.up * jumpHeight;
             rb.AddForce(jumpPower, ForceMode.VelocityChange);
+            audioManager.PlaySFX(audioManager.jump);
         }
 
     }
+
+
 
     private void FixedUpdate()
     {
