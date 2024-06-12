@@ -6,31 +6,30 @@ using TMPro; // 네임스페이스
 
 public class GameManager : MonoBehaviour
 {
-    public int score;
+    AudioManager audioManager;
+    int score;
     public static GameManager inst;
 
     public TextMeshProUGUI scoreText;
+    public PlayerMovement playerMovement;
 
     public void IncrementScore()
     {
+
         score++;
         scoreText.text = "SCORE: " + score;
+
+        // 효과음
+        audioManager.PlaySFX(audioManager.coin);
+
+        // 플레이어 속도 증가
+        playerMovement.speed += playerMovement.speedIncreasePerPoint;
     }
 
     private void Awake()
     {
         inst = this; // 게임 시작시 생성
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

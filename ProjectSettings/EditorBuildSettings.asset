@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/01_Scene/Main Menu.unity
     guid: 28d653aeddb74514ba9c578644270809
   - enabled: 1
-    path: Assets/01_Scene/SampleScene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+    path: Assets/01_Scene/EndlessRun.unity
+    guid: c83c2e6f4c356f0448bea381ea2cc584
   m_configObjects: {}

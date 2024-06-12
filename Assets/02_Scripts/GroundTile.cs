@@ -3,47 +3,50 @@ using UnityEngine;
 
 public class GroundTile : MonoBehaviour
 {
-    GroundSpawner groundSpawner;
-    // Start is called before the first frame update
+    public GameObject obstaclePrefab;
+    public GameObject coinPrefab; 
+    public GroundSpawner groundSpawner;
+    public GameObject tallObstaclePrefab;
+    public float tallObstacleChance = 0.2f;
+
     void Start()
     {
         groundSpawner = GameObject.FindObjectOfType<GroundSpawner>();
-        SpawnObstacle();
-        SpawnCoins();
     }
 
     private void OnTriggerExit (Collider other)
     {
-        groundSpawner.SpawnTile();
+        groundSpawner.SpawnTile(true);
         Destroy(gameObject, 2);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     // 장애물 생성
-    public GameObject obstaclePrefab;
-
-    void SpawnObstacle()
+    public void SpawnObstacle()
     {
-        // 랜덤 포인트를 생성
+        // 어떤 장애물을 생성할 것인지 결정
+        GameObject obstacleToSpawn = obstaclePrefab;
+        float random = Random.Range(0f, 1f); // Random.Range 메서드 사용
+
+        if (random < tallObstacleChance)
+        {
+            obstacleToSpawn = tallObstaclePrefab;
+        }
+
+        // 랜덤 포인트를 결정
         int obstacleSpawnIndex = Random.Range(2, 5); // 인덱스 2,3,4
         Transform spawnPoint = transform.GetChild(obstacleSpawnIndex).transform;
 
         // 그 장소에 장애물 생성
-        Instantiate(obstaclePrefab, spawnPoint.position, Quaternion.identity, transform);
+        Instantiate(obstacleToSpawn, spawnPoint.position, Quaternion.identity, transform);
     }
 
 
 
     // 코인생성
-    public GameObject coinPrefab;
-    void SpawnCoins()
+    public void SpawnCoins()
     {
-        int coinsToSpawn = 10; // 생성하려는 동전 수
+        int coinsToSpawn = 5; // 생성하려는 동전 수
         for (int i = 0; i < coinsToSpawn; i++)
         {
             GameObject temp = Instantiate(coinPrefab, transform); // 인스턴스화로 코인을 스폰
